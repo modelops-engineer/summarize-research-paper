@@ -27,13 +27,12 @@ length_input = st.selectbox('Select the length of summary...',[
 
 template = load_prompt("template.json")
 
-# place holders
-prompt = template.invoke({
+
+if st.button('Summarize'):
+    chain = template | model
+    result = chain.invoke({
     'paper_name':paper_name,
     'style_input':style_input,
     'length_input':length_input
-})
-
-if st.button('Summarize'):
-    result = model.invoke(prompt)   
+})   
     st.write(result.content)
