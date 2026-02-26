@@ -1,21 +1,23 @@
 from langchain_openai import ChatOpenAI
+from langchain_core.messages import SystemMessage, AIMessage, HumanMessage
 from dotenv import load_dotenv
 
 load_dotenv()
 
 model = ChatOpenAI()
 
+# Giving context to chatbot for user input and AI output of the conversation
 
-# LLM does not have memory so we are appending the conversation in the list, so that it can 
-# store them as it's memory and it will go to model as input
-chat_history = []
+chat_history = [
+    SystemMessage(content = "You are an expert of AI development")
+]
 
 while True:
     user_input = input('You: ')
-    chat_history.append(user_input)
+    chat_history.append(HumanMessage(content = user_input))
     if user_input.lower() == "exit":
         break
     
     result = model.invoke(chat_history)
-    chat_history.append(result.content)
+    chat_history.append(AIMessage(content = result.content))
     print("AI:", result.content)
